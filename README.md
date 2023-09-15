@@ -16,7 +16,7 @@ From my point of view, asking to solve coding challenges that have no relation t
 
 This is even less the case since the arrival of LLMs like GPT-4, if these tools are capable of solving these problems for us then shouldn't we focus on higher level problems and let them do their thing?
 
-It's as if a lax firm took a multiple choice test on knowledge of the penal code for a position as a prosecutor for a trial. Not very relevant.
+It's as if a lax firm made a multiple choice test on knowledge of the penal code to evaluate for the position as a prosecutor for a trial. Not very relevant.
 
 ## How it works
 
