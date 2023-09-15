@@ -1,6 +1,6 @@
 # Codingame Solver
 
-This extension can be used to pass Codingame exercise automatically.
+This extension can be used to pass Codingame exercise automatically. For now it can only solve Typescript exercises but it could solve in any other langage, just change the prompt ;-) 
 
 Just clone the repository and then put your own OpenAI API key at the beginning of [service-worker.js](https://github.com/Aschen/codingame-solver/blob/master/service-worker.js#L1).
 
