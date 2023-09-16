@@ -1,14 +1,10 @@
 # Codingame Solver
 
-This extension can be used to pass Codingame exercise automatically. For now it can only solve Typescript exercises but it could solve in any other langage, just change the prompt ;-) 
+This extension can be used to pass Codingame exercise automatically.
 
-Just clone the repository and then put your own OpenAI API key at the beginning of [service-worker.js](https://github.com/Aschen/codingame-solver/blob/master/service-worker.js#L1).
+Then go to `chrome://extensions` and [load the unpacked extension](https://developer.chrome.com/docs/extensions/mv3/getstarted/development-basics/)
 
-Then go to `chrome://extensions` and [load the unpacked extension](https://developer.chrome.com/docs/extensions/mv3/getstarted/development-basics/) 
-
-See a video here (extension popup was not captured unfortunately): https://aschen.ovh/codingame-solver.mp4 
-
-![Best report](assets/image.png)]
+![video](assets/codingame-solver.mp4)
 
 ## Why?
 
@@ -28,10 +24,10 @@ This is a Chrome extension with the usual 3 parts communicating with each other:
 
 ### Coding challenge solving
 
- - Click on the extension to open the popup
- - Click the "Solve coding exercise" button from the extension popup
- - Select the div containing the instructions
- - enjoy
+- Click on the extension to open the popup
+- Click the "Solve coding exercise" button from the extension popup
+- Select the div containing the instructions
+- enjoy
 
 The extensions use the Chrome DevTools protocol to simulate user input in the text editor.
 
