@@ -297,6 +297,10 @@ async function* completion(prompt) {
 let TAB_ID;
 
 async function startDebugger() {
+  if (TAB_ID) {
+    return;
+  }
+
   const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
 
   TAB_ID = tab.id;
