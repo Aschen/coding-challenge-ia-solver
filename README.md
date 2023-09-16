@@ -2,11 +2,11 @@
 
 This extension can be used to pass Codingame exercise automatically.
 
-Then go to `chrome://extensions` and [load the unpacked extension](https://developer.chrome.com/docs/extensions/mv3/getstarted/development-basics/)
+Clone this repository, then open Google Chrome, go to `chrome://extensions` and [load the unpacked extension](https://developer.chrome.com/docs/extensions/mv3/getstarted/development-basics/)
 
 https://github.com/Aschen/codingame-solver/assets/4447392/2e4b105d-7605-4791-8785-dd4b09e4a9ca
 
-![best grade](assets/image.png)
+<img src="assets/image.png" width="400">
 
 ## Why?
 
