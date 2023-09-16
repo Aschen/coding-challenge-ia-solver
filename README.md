@@ -1,18 +1,22 @@
 # Codingame Solver
 
-This extension can be used to pass Codingame exercise automatically.
+This extension can be used to pass Codingame exercise automatically. For now it can only solve Typescript exercises but it could solve in any other langage, just change the prompt ;-) 
 
-Just clone the repository and then put your own OpenAI API key at the beginning of [service-worker.js]().
+Just clone the repository and then put your own OpenAI API key at the beginning of [service-worker.js](https://github.com/Aschen/codingame-solver/blob/master/service-worker.js#L1).
 
-[![Watch the video](assets/image.png)](assets/codingame-solver.mp4)
+Then go to `chrome://extensions` and [load the unpacked extension](https://developer.chrome.com/docs/extensions/mv3/getstarted/development-basics/) 
+
+See a video here (extension popup was not captured unfortunately): https://aschen.ovh/codingame-solver.mp4 
+
+![Best report](assets/image.png)]
 
 ## Why?
 
-From my point of view, asking for algorithms that have no relation to the real problems encountered in the professional environment has never been an effective method of evaluating a candidate.
+From my point of view, asking to solve coding challenges that have no relation to the real problems encountered in the professional environment has never been an effective method of evaluating a candidate.
 
 This is even less the case since the arrival of LLMs like GPT-4, if these tools are capable of solving these problems for us then shouldn't we focus on higher level problems and let them do their thing?
 
-It's as if a lax firm took a multiple choice test on knowledge of the penal code for a position as a prosecutor for a trial. Not very relevant.
+It's as if a lax firm made a multiple choice test on knowledge of the penal code to evaluate for the position as a prosecutor for a trial. Not very relevant.
 
 ## How it works
 
@@ -22,7 +26,12 @@ This is a Chrome extension with the usual 3 parts communicating with each other:
 - service worker running in the background
 - content script injected on the webpage
 
-### Test exercise solving
+### Coding challenge solving
+
+ - Click on the extension to open the popup
+ - Click the "Solve coding exercise" button from the extension popup
+ - Select the div containing the instructions
+ - enjoy
 
 The extensions use the Chrome DevTools protocol to simulate user input in the text editor.
 
@@ -32,7 +41,7 @@ When the button is clicked:
 - start debugger
 - call the content script to start an element picker to select the instructions (Codingame randomize css class and IDs)
 - use GPT-4 to stream code answer
-- input key by key the answer (harder than you think, look at [typeText]())
+- input key by key the answer (harder than you think, look at [typeText](https://github.com/Aschen/codingame-solver/blob/master/service-worker.js#L95))
 
 ### QCM solving
 
