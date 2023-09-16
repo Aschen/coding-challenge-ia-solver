@@ -6,7 +6,7 @@ Then go to `chrome://extensions` and [load the unpacked extension](https://devel
 
 https://github.com/Aschen/codingame-solver/assets/4447392/2e4b105d-7605-4791-8785-dd4b09e4a9ca
 
-![best grade](assets/image.png)
+<img src="assets/image.png" width="400">
 
 ## Why?
 
