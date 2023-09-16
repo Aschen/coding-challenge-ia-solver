@@ -1,4 +1,6 @@
 // START OF PICK-DOM-ELEMENT CODE
+// Vendored from https://github.com/hmarr/pick-dom-element
+
 class ElementOverlay {
   constructor(options) {
     var _a, _b, _c, _d, _e, _f, _g, _h, _j;

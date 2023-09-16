@@ -36,3 +36,68 @@ document
       });
     });
   });
+
+const apiKeyInput = document.getElementById("apiKey");
+const apiKeyStatus = document.getElementById("apiKeyStatus");
+
+async function retrieveApiKeyFromStorage() {
+  const apiKey = await new Promise((resolve) => {
+    chrome.storage.sync.get("apiKey", (result) => {
+      resolve(result.apiKey);
+    });
+  });
+
+  if (!apiKey) {
+    return;
+  }
+
+  saveApiKey(apiKey);
+}
+retrieveApiKeyFromStorage();
+
+apiKeyInput.addEventListener("input", () => {
+  const apiKey = apiKeyInput.value.trim();
+
+  saveApiKey(apiKey);
+});
+
+async function saveApiKey(apiKey) {
+  const apiUrl = "https://api.openai.com/v1/engines/davinci/completions";
+
+  try {
+    const response = await fetch(apiUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${apiKey}`,
+      },
+      body: JSON.stringify({
+        prompt: "Test API key validity",
+        max_tokens: 5,
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error("Invalid API key");
+    }
+
+    if (apiKeyStatus) {
+      apiKeyStatus.textContent = "Got valid API key";
+      apiKeyStatus.style.color = "green";
+    }
+
+    chrome.storage.sync.set({ apiKey });
+  } catch (error) {
+    if (apiKeyStatus) {
+      apiKeyStatus.textContent = "Invalid or no API key";
+      apiKeyStatus.style.color = "red";
+    }
+  }
+}
+
+document.getElementById("resetApiKey").addEventListener("click", () => {
+  chrome.storage.sync.remove("apiKey");
+  apiKeyInput.value = "";
+  apiKeyStatus.textContent = "Invalid or no API key";
+  apiKeyStatus.style.color = "red";
+});

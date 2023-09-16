@@ -4,33 +4,48 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Codingame worker</title>
+    <style>
+      h1 {
+        font-size: 24px;
+        color: #333;
+        text-align: center;
+        margin-top: 20px;
+        margin-bottom: 20px;
+      }
+      
+      h2 {
+        font-size: 16px;
+        color: #666;
+        text-align: center;
+        margin-bottom: 20px;
+      }
+
+      button:hover {
+        cursor: pointer;
+      }
+    </style>
   </head>
-  <body style="width: 300px">
-    <button
-      type="button"
-      class="btn btn-primary"
-      id="solveCoding"      
-    >
-      Solve coding exercise
-    </button>
+    <body style="width: 300px">
+      <h1>Codingame Solver</h1>
+      <h2>(jaime la nature)</h2>
 
-    <input id="choicesSelector" type="text" value="[data-test=&quot;AnswerMcqChoice&quot;]"/>
-    <button
-      type="button"
-      class="btn btn-primary"
-      id="solveQCM"      
-    >
-      Solve QCM
-    </button>
+      <div style="display: flex; align-items: center;">
+        <input
+          id="apiKey"
+          type="text"
+          style="border: 1px solid #ccc; padding: 10px; flex-grow: 1;"
+          placeholder="OpenAI API key"
+        />
+        <button id="resetApiKey" style="background-color: #e0e0e0; color: black; border: none; padding: 10px; margin-left: 10px">Reset</button>
+      </div>
+      <p id="apiKeyStatus" style="color: red;"></p>
 
-    <button
-      type="button"
-      class="btn btn-primary"
-      id="solveGeneric"      
-    >
-      Solve generic
-    </button>
+      <div style="display: flex; align-items: center; margin-top: 10px;">
+        <button id="solveCoding" style="background-color: #4caf50; color: white; border: none; padding: 10px; margin-right: 10px">Coding Challenge</button>
+        <button id="solveQCM" style="background-color: #f44336; color: white; border: none; padding: 10px; margin-right: 10px">QCM</button>
+        <button id="solveGeneric" style="background-color: #2196f3; color: white; border: none; padding: 10px;">Generic</button>
+      </div>
 
-    <script type="module" crossorigin src="/index.js"></script>    
+      <script type="module" crossorigin src="/index.js"></script>    
   </body>
 </html>

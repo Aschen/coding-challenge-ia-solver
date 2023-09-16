@@ -1,5 +1,3 @@
-const API_KEY = "your key";
-
 // START DOM.JS ================================================================================================================================
 
 const delayBetweenKeystrokes = () => Math.random() * 100;
@@ -12,6 +10,8 @@ async function sleep(ms) {
 async function sendCommand(method, params) {
   return chrome.debugger.sendCommand({ tabId: TAB_ID }, method, params);
 }
+
+// Special thanks to https://github.com/TaxyAI/browser-extension for some part of the DOM manipulation code (with some adaptations ofc)
 
 async function clickAtPosition(x, y, clickCount = 1) {
   // callRPC("ripple", [x, y]);
@@ -168,11 +168,19 @@ async function clickCodeEditor() {
 // START OPENAI.JS ================================================================================================================================
 const API_URL = "https://api.openai.com/v1/chat/completions";
 
+async function getApiKey() {
+  return new Promise((resolve) => {
+    chrome.storage.sync.get("apiKey", (result) => {
+      resolve(result.apiKey);
+    });
+  });
+}
+
 const SOLVE_CODING_PROMPT = ({ instructions, baseCode }) => `
 You are a developer.
 
 You are passing a code exercice for a job interview.
-You need to solve the problem using typescript.
+You need to solve the problem using the same language as in the exercise base code.
 
 # Problem to solve:
 
@@ -189,7 +197,7 @@ ${baseCode}
 You need to complete the following code to solve the problem.
 Keep the base code as much as possible. Follow the instructions given in comment.
 
-Answer only typescript code, do not explain the code or put it between backticks.
+Answer only code, do not explain the code or put it between backticks.
 `;
 
 const SOLVE_QCM_PROMPT = ({ question, choices }) => `
@@ -227,49 +235,59 @@ Give a concise answer to the question asked in the exercice.
 
 async function* completion(prompt) {
   console.log(prompt);
+  const apiKey = await getApiKey();
 
-  const response = await fetch(API_URL, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${API_KEY}`,
-    },
-    body: JSON.stringify({
-      model: "gpt-4",
-      messages: [{ role: "user", content: prompt }],
-      stream: true,
-    }),
-  });
+  try {
+    const response = await fetch(API_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${apiKey}`,
+      },
+      body: JSON.stringify({
+        model: "gpt-4",
+        messages: [{ role: "user", content: prompt }],
+        stream: true,
+      }),
+    });
 
-  const reader = response.body.getReader();
-  const decoder = new TextDecoder("utf-8");
+    const reader = response.body.getReader();
+    const decoder = new TextDecoder("utf-8");
 
-  while (true) {
-    const { value, done } = await reader.read();
+    while (true) {
+      const { value, done } = await reader.read();
 
-    if (done) {
-      break;
-    }
-
-    const raw = decoder.decode(value);
-
-    for (const line of raw.split("\n")) {
-      if (!line.startsWith("data: ")) {
-        continue;
-      }
-
-      const jsonRaw = line.replace("data: ", "");
-
-      if (jsonRaw === "[DONE]") {
+      if (done) {
         break;
       }
 
-      const message = JSON.parse(jsonRaw);
+      const raw = decoder.decode(value);
 
-      if (message.choices[0].delta.content) {
-        yield message.choices[0].delta.content;
+      for (const line of raw.split("\n")) {
+        if (!line.startsWith("data: ")) {
+          continue;
+        }
+
+        const jsonRaw = line.replace("data: ", "");
+
+        if (jsonRaw === "[DONE]") {
+          break;
+        }
+
+        try {
+          const message = JSON.parse(jsonRaw);
+          if (message.choices[0].delta.content) {
+            console.log(message.choices[0].delta.content);
+            yield message.choices[0].delta.content;
+          }
+        } catch (error) {
+          console.error("Failed to parse JSON:", jsonRaw);
+          throw error;
+        }
       }
     }
+  } catch (error) {
+    throw error;
   }
 }
 
