@@ -1,11 +1,13 @@
-# Codingame Solver
+# Coding Challenge Solver
 
-This extension can be used to pass Codingame exercise automatically.
+This extension can be used to pass Coding Challenge exercise automatically.
 
 Clone this repository, then open Google Chrome, go to `chrome://extensions` and [load the unpacked extension](https://developer.chrome.com/docs/extensions/mv3/getstarted/development-basics/)
 
-https://github.com/Aschen/codingame-solver/assets/4447392/2e4b105d-7605-4791-8785-dd4b09e4a9ca
+_Extension is getting approved on the Chrome Store, saty tuned_
 
+Example with a famous french coding challenge provider:
+<img src="assets/solve.png" width="400">
 <img src="assets/image.png" width="400">
 
 ## Why?
@@ -37,7 +39,7 @@ When the button is clicked:
 
 - call the worker
 - start debugger
-- call the content script to start an element picker to select the instructions (Codingame randomize css class and IDs)
+- call the content script to start an element picker to select the instructions
 - use GPT-4 to stream code answer
 - input key by key the answer (harder than you think, look at [typeText](https://github.com/Aschen/codingame-solver/blob/master/service-worker.js#L95))
 
@@ -49,6 +51,12 @@ Roughly the same kind of workflow with the element picker but then the answer is
 
 Take the entire text body and try to find an answer to any question inside, then write the result in the console.
 
-## Naming
+## History
 
-"Jaime la nature" was the name of the Chrome extension to cheat at the informatic cultur exam at Epitech. This exam was a huge QCM so either you had edeitic memory or like 80% of the student you have cheat to succeed (but don't get caught!).
+First name, "Jaime la nature" was the name of the Chrome extension to cheat at the informatic cultur exam at Epitech. This exam was a huge QCM so either you had edeitic memory or like 80% of the student you have cheat to succeed (but don't get caught!).
+
+Then due to legal complain of a famous French Coding Challenge provider based in Montpellier and own by an American company, I renamed the project into "Coding Challenge IA Solver" and published it to the Chrome Webstore
+
+## Confidentiality
+
+The extension does not collect any personal information. In fact, it's not connected to any server and it only make request to OpenAI API.

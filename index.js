@@ -5,10 +5,15 @@ let tabId;
 document
   .getElementById("solveCoding")
   .addEventListener("click", async function solveCoding() {
+    const language = document.getElementById("language").value;
+
     await new Promise((resolve) => {
-      chrome.runtime.sendMessage({ type: "answer-coding" }, (response) => {
-        resolve(response);
-      });
+      chrome.runtime.sendMessage(
+        { type: "answer-coding", language },
+        (response) => {
+          resolve(response);
+        }
+      );
     });
   });
 
@@ -62,7 +67,7 @@ apiKeyInput.addEventListener("input", () => {
 });
 
 async function saveApiKey(apiKey) {
-  const apiUrl = "https://api.openai.com/v1/engines/davinci/completions";
+  const apiUrl = "https://api.openai.com/v1/chat/completions";
 
   try {
     const response = await fetch(apiUrl, {
@@ -72,8 +77,9 @@ async function saveApiKey(apiKey) {
         Authorization: `Bearer ${apiKey}`,
       },
       body: JSON.stringify({
-        prompt: "Test API key validity",
-        max_tokens: 5,
+        model: "gpt-4-0125-preview",
+        messages: [{ role: "user", content: "Tell me a joke" }],
+        stream: true,
       }),
     });
 
@@ -89,7 +95,7 @@ async function saveApiKey(apiKey) {
     chrome.storage.sync.set({ apiKey });
   } catch (error) {
     if (apiKeyStatus) {
-      apiKeyStatus.textContent = "Invalid or no API key";
+      apiKeyStatus.textContent = `Invalid or no API key (${error.message})`;
       apiKeyStatus.style.color = "red";
     }
   }

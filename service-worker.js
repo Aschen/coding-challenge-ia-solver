@@ -176,11 +176,11 @@ async function getApiKey() {
   });
 }
 
-const SOLVE_CODING_PROMPT = ({ instructions, baseCode }) => `
+const SOLVE_CODING_PROMPT = ({ instructions, baseCode, language }) => `
 You are a developer.
 
 You are passing a code exercice for a job interview.
-You need to solve the problem using the same language as in the exercise base code.
+You need to solve the problem using ${language}
 
 # Problem to solve:
 
@@ -234,7 +234,7 @@ Give a concise answer to the question asked in the exercice.
 `;
 
 async function* completion(prompt) {
-  console.log(prompt);
+  console.log({ prompt });
   const apiKey = await getApiKey();
 
   try {
@@ -245,7 +245,7 @@ async function* completion(prompt) {
         Authorization: `Bearer ${apiKey}`,
       },
       body: JSON.stringify({
-        model: "gpt-4",
+        model: "gpt-4-0125-preview",
         messages: [{ role: "user", content: prompt }],
         stream: true,
       }),
@@ -297,10 +297,6 @@ async function* completion(prompt) {
 let TAB_ID;
 
 async function startDebugger() {
-  if (TAB_ID) {
-    return;
-  }
-
   const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
 
   TAB_ID = tab.id;
@@ -341,7 +337,7 @@ async function extractText(selector) {
   return response.text;
 }
 
-async function answerCoding({ instructions }) {
+async function answerCoding({ instructions, language }) {
   const baseCode = await getTestBaseCode();
 
   await clickCodeEditor();
@@ -349,7 +345,7 @@ async function answerCoding({ instructions }) {
   await selectAll();
 
   for await (const token of completion(
-    SOLVE_CODING_PROMPT({ instructions, baseCode })
+    SOLVE_CODING_PROMPT({ instructions, baseCode, language })
   )) {
     await typeText(token);
   }
@@ -383,7 +379,7 @@ async function answerGeneric({ text }) {
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   console.log("Worker receive message", request.type);
-
+  console.log(request);
   switch (request.type) {
     case "start-debugger":
       startDebugger().then((tabId) => {
@@ -400,7 +396,10 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
           });
         })
         .then(({ text }) => {
-          return answerCoding({ instructions: text });
+          return answerCoding({
+            instructions: text,
+            language: request.language,
+          });
         })
         .then(() => {
           sendResponse();
