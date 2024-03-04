@@ -4,10 +4,11 @@ This extension can be used to pass Coding Challenge exercise automatically.
 
 Clone this repository, then open Google Chrome, go to `chrome://extensions` and [load the unpacked extension](https://developer.chrome.com/docs/extensions/mv3/getstarted/development-basics/)
 
-_Extension is getting approved on the Chrome Store, saty tuned_
+_Extension is getting approved on the Chrome Store, stay tuned_
 
 Example with a famous french coding challenge provider:
 <img src="assets/solve.png" width="400">
+</br>
 <img src="assets/image.png" width="400">
 
 ## Why?
